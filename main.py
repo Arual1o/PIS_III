@@ -8,8 +8,8 @@ mydb = mysql.connector.connect(
   user="root",
   database="pis_iiidb"
 )
-# c = mydb.cursor()
-# c.execute("SHOW DATABASES")
+c = mydb.cursor()
+c.execute("SHOW DATABASES")
 # for i in c:
 #     print(i)
 # c = mydb.cursor()
