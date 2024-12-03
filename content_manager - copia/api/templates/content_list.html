@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Lista de IDs</h1>
+    <ul>
+        <?php
+        if ($result->num_rows > 0) {
+            // Recorrer los resultados
+            while ($row = $result->fetch_assoc()) {
+                echo "<li>" . $row['id'] . "</li>";
+            }
+        } else {
+            echo "<li>No se encontraron IDs</li>";
+        }
+        ?>
+    </ul>
+</body>
+</html>
