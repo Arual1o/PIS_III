@@ -4,9 +4,16 @@ from django.conf import settings
 from django.contrib.staticfiles.urls import static
 
 urlpatterns = [
+    path('', views.home, name='home'),
+    path('inicio/', views.home2, name='home2'),
     path('content/<int:id>/', views.content_detail, name='content_detail'),
     path('render-json/<int:id>/', views.render_json, name='render_json'),
-    path('ckeditor/', include('ckeditor_uploader.urls')),  # Si deseas subir imágenes
-    path('create/', views.create_content, name='create_content'),  # Ruta para crear contenido
-    path('front/',views.Front, name='Front'),  # Ruta para listado de cards ya guardadas 
+    path('content/<int:id>/json/', views.render_json, name='render_json'),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('crear/', views.create_content, name='create_content'),
+    path('crear/<int:id>/', views.create_content, name='create_content'),
+    path('cards/', views.content_list, name='content_list'),
+    path('cards/<int:id>/', views.content_detail, name='content_detail'),
+    path('contenido/', views.listar_contenido, name='listar_contenido'),
+    path('delete_content/<int:id>/', views.delete_content, name='delete_content'),
 ] + static(settings.MEDIA_URL , document_root=settings.MEDIA_ROOT)

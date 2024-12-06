@@ -4,34 +4,30 @@ from .forms import ContentForm
 from .models import Content
 from bs4 import BeautifulSoup
 import json
+from django.conf import settings
+
 
 def render_json(request, id):
     content = get_object_or_404(Content, id=id)
-    # return render(request, 'content_detail.html', {'content': content})
     # Renderiza el HTML completo
     full_html = render(request, 'content_detail.html', {'content': content}).content
-    
     # Utiliza BeautifulSoup para extraer solo el contenido del div container
     soup = BeautifulSoup(full_html, 'html.parser')
-    container_div = soup.find('div', class_='container')
-    
-    # Retorna el HTML del div container
-    # return HttpResponse(container_div)
-
     # Construye el diccionario con los datos en el formato requerido
+    container_div = soup.find('div', class_='container')
+    # Construir la URL dinámica
+    link = settings.BASE_URL + f'/content/{content.id}/'
     data = {
         "id": content.id,
         "date": content.created_at.isoformat(),
-        "date_gmt": content.created_at.isoformat(),
         "guid": {
-            "rendered": f"https://tu-dominio.com/?p={content.id}"
+            "rendered": link,
         },
         "modified": content.updated_at.isoformat() if hasattr(content, 'updated_at') else content.created_at.isoformat(),
-        "modified_gmt": content.updated_at.isoformat() if hasattr(content, 'updated_at') else content.created_at.isoformat(),
         "slug": content.title.lower().replace(' ', '-'),
         "status": "publish",
         "type": "post",
-        "link": f"https://tu-dominio.com/{content.title.lower().replace(' ', '-')}/",
+        "link": link,
         "title": {
             "rendered": content.title
         },
@@ -40,30 +36,21 @@ def render_json(request, id):
             "protected": False
         },
         "excerpt": {
-            "rendered": content.body[:150],  # Un ejemplo de resumen de 150 caracteres
+            "rendered": content.body[:150],
             "protected": False
         }
     }
 
     # Retorna la respuesta en JSON
-    # return JsonResponse(data)
-    return render(request, 'rendered_content.html', {'data': data})
+    return JsonResponse(data)
+    #return render(request, 'rendered_content.html', {'data': data})
     
 def content_detail(request,id):
+    # Recupera el contenido específico usando el ID
     content = get_object_or_404(Content, id=id)
-    # return render(request, 'content_detail.html', {'content': content})
-    # Renderiza el HTML completo
-    full_html = render(request, 'content_detail.html', {'content': content}).content
-    
-    # Utiliza BeautifulSoup para extraer solo el contenido del div container
-    soup = BeautifulSoup(full_html, 'html.parser')
-    container_div = soup.find('div', class_='container')
-    
-    # Retorna el HTML del div container
-    return HttpResponse(container_div)
-    # return render(request, 'content_detail.html', {'data': data})
+    return render(request, 'content_detail.html', {'content': content})
 
-# Create your views here.
+
 def create_content(request):
     if request.method == 'POST':
         form = ContentForm(request.POST, request.FILES)  # Usar request.FILES para manejar imágenes
@@ -76,8 +63,28 @@ def create_content(request):
     return render(request, 'create_content.html', {'form': form})
 
 def content_list(request):
-    
-    return render(request, 'content_list.html')
+    contents = Content.objects.all()
+    return render(request, 'content_list.html', {'contents': contents})
 
-def Front():
-    return
+
+
+def listar_contenido(request):
+    contenidos = Content.objects.all()
+    return render(request, 'listar_contenido.html', {'contenidos': contenidos})
+
+
+def home(request):
+    contenidos = Content.objects.all()
+    return render(request, 'home.html', {'contenidos': contenidos})
+
+def home2(request):
+    contenidos = Content.objects.all()
+    return render(request, 'home2.html', {'contenidos': contenidos})
+
+
+def delete_content(request, id):
+    content = get_object_or_404(Content, id=id)
+    if request.method == 'POST':
+        content.delete()
+        return redirect('content_list')  # Redirige a la lista de contenidos
+    return render(request, 'confirm_delete.html', {'content': content})  # Muestra la vista de confirmación
