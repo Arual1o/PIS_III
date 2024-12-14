@@ -50,6 +50,7 @@ def render_json(request, id):
     # Retorna la respuesta en JSON
     return JsonResponse(data)
     #return render(request, 'rendered_content.html', {'data': data})
+
 @login_required    
 def content_detail(request,id):
     # Recupera el contenido específico usando el ID
@@ -57,12 +58,9 @@ def content_detail(request,id):
     return render(request, 'content_detail.html', {'content': content})
 
 @login_required
-
 def create_content(request, id=None):
-    print(f"ID recibido: {id}")  
     if id:
         content = get_object_or_404(Content, id=id)
-        print(content)
     else:
         content = None
 
@@ -79,8 +77,6 @@ def create_content(request, id=None):
 def content_list(request):
     contents = Content.objects.all()
     return render(request, 'content_list.html', {'contents': contents})
-
-
 
 def listar_contenido(request):
     contenidos = Content.objects.all()

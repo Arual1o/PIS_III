@@ -7,8 +7,8 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView
 
 urlpatterns = [
-    path('', LoginView.as_view(), name='login'),
-    path('inicio/', views.home, name='home'),
+    path('login', LoginView.as_view(), name='login'),
+    path('', views.home, name='home'),
     path('inicio2/', views.home2, name='home2'),
     path('content/<int:id>/', views.content_detail, name='content_detail'),
     path('render-json/<int:id>/', views.render_json, name='render_json'),

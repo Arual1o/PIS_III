@@ -7,12 +7,10 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.122.0">
+    
     <title>Crear contenido</title>
 
     <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
-    <!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/offcanvas-navbar/"> -->
-    <!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/blog/"> -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
@@ -123,13 +121,11 @@
         }
 
     </style>
-    <!-- Custom styles for this template -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet"> -->
-
+    
   </head>
   {% if user.is_staff %}
     <body class="bg-body-tertiary">
-      <div class="container">
+      <div class="container-fluid">
         <main>
           <div class="py-5 text-center">
             
@@ -138,46 +134,46 @@
               <p class="lead">Ingrese la información de apoyo para el cuidador.</p>  
             </div>
           </div>
-      <div class="container-fluid">
-        <div class="row g-5">
-          <div class="col-lg-8 col-md-12"> <!-- Hace la columna adaptable -->
-            <form method="POST" enctype="multipart/form-data" action="{% url 'create_content'  %}">
-              {% csrf_token %}
-              <div class="mb-3">
-                <label for="title" class="form-label"><h3 class="mb-3"><strong>Título</strong></h3></label>
-                <!-- <input type="text" class="form-control" id="title" name="title" placeholder="Ingrese un título"> -->
-                <input type="text" class="form-control" id="title" name="title" placeholder="Ingrese un título" value="{{ form.title.value|default:'' }}">
-                
-              </div>
-              <div class="mb-3">
-                <label for="body" class="form-label"><h3 class="mb-3"><strong>Descripción</strong></h3></label>
-                <!-- <textarea class="form-control" id="body" name="body" rows="3" placeholder="Ingrese una descripción"></textarea> -->
-                <textarea class="form-control" id="body" name="body" rows="3" placeholder="Ingrese una descripción">{{ form.body.value|default:'' }}</textarea>
-              </div>
-              <div class="mb-3">
-                <label for="image" class="form-label"><h3 class="mb-3"><strong>Imagen</strong></h3></label>
-                <input type="file" class="form-control" id="image" name="image">
-                {% if form.instance.image %}
-                  <div class="mt-3">
-                      <img src="{{ form.instance.image.url }}" alt="Imagen actual" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 5px;">
+          <div class="container-fluid">
+            <div class="row g-5">
+              <div class="col-lg-8 col-md-12"> <!-- Hace la columna adaptable -->
+                <form method="POST" enctype="multipart/form-data" action="{% if form.instance.id %}{% url 'create_content'  form.instance.id %}{% else %}{% url 'create_content' %}{% endif %}">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="title" class="form-label"><h3 class="mb-3"><strong>Título</strong></h3></label>
+                    <!-- <input type="text" class="form-control" id="title" name="title" placeholder="Ingrese un título"> -->
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Ingrese un título" value="{{ form.title.value|default:'' }}">
+                    
                   </div>
-                {% endif %}
+                  <div class="mb-3">
+                    <label for="body" class="form-label"><h3 class="mb-3"><strong>Descripción</strong></h3></label>
+                    <!-- <textarea class="form-control" id="body" name="body" rows="3" placeholder="Ingrese una descripción"></textarea> -->
+                    <textarea class="form-control" id="body" name="body" rows="3" placeholder="Ingrese una descripción">{{ form.body.value|default:'' }}</textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="image" class="form-label"><h3 class="mb-3"><strong>Imagen</strong></h3></label>
+                    <input type="file" class="form-control" id="image" name="image">
+                    {% if form.instance.image %}
+                      <div class="mt-3">
+                        <strong>Imagen actual </strong>
+                          <img src="{{ form.instance.image.url }}" alt="Imagen actual" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 5px;">
+                      </div>
+                    {% endif %}
+                  </div>
+                  <button class="w-100 btn btn-bd-primary" type="submit">Guardar</button>
+                  <a href="{% url 'home'  %}" class="w-100 btn btn-danger">Cancelar</a>
+                </form>
               </div>
-              <button class="w-100 btn btn-bd-primary" type="submit">Guardar</button>
-              <a href="{% url 'home'  %}" class="w-100 btn btn-danger">Cancelar</a>
-            </form>
-          </div>
-            <div class="col-lg-4 col-md-12">
-              <h4 class="custom-color"><strong>Previsualizar</strong></h4>
-              <div style="border: 1px solid #093c71; padding: 20px; border-radius: 10px;">
-                <img id="preview-image" src="#" alt="Previsualización de la imagen" style="max-width: 100%; height: auto; display: none;">
-                <h3 id="preview-title">Ingrese título</h3>
-                <p id="preview-body">Acá se verá la descripción</p>
+              <div class="col-lg-4 col-md-12">
+                <h4 class="custom-color"><strong>Previsualizar</strong></h4>
+                <div style="border: 1px solid #093c71; padding: 20px; border-radius: 10px;">
+                  <img id="preview-image" src="#" alt="Previsualización de la imagen" style="max-width: 100%; height: auto; display: none;">
+                  <h3 id="preview-title">Ingrese título</h3>
+                  <p id="preview-body">Acá se verá la descripción</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
         </main>
       </div>
 

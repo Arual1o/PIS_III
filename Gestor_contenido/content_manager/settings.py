@@ -18,8 +18,8 @@ CKEDITOR_UPLOAD_PATH = "uploads/"  # Puedes cambiar esto a la ruta que prefieras
 
 # Asegúrate de tener el directorio `uploads` creado en tu proyecto.
 
-LOGIN_REDIRECT_URL = '/inicio/'
-LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
 # El tiempo de vida de la sesión (en segundos). Establecerlo a 0 la hará persistente.
 SESSION_COOKIE_AGE = 3600  # 1 hora, pero puedes ajustarlo según lo que necesites.
 
