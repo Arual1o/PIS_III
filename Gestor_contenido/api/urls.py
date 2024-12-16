@@ -25,4 +25,5 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('logout-to-cuidador/', views.logout_to_cuidador, name='logout_to_cuidador'),
 ] + static(settings.MEDIA_URL , document_root=settings.MEDIA_ROOT)

@@ -9,6 +9,8 @@ from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.apps import apps
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
+from django.contrib.auth import logout, login
 
 def is_admin(user):
     return user.groups.filter(name='Admin').exists()
@@ -82,8 +84,14 @@ def listar_contenido(request):
     contenidos = Content.objects.all()
     return render(request, 'listar_contenido.html', {'contenidos': contenidos})
 
-@login_required
+# @login_required
 def home(request):
+    # Si el usuario no está autenticado, iniciar sesión como 'cuidador'
+    if not request.user.is_authenticated:
+        # Encuentra o crea el usuario 'cuidador'
+        cuidador = User.objects.get(username='cuidador')  # Asegúrate de que este usuario exista
+        login(request, cuidador)  # Inicia sesión como cuidador
+
     contenidos = Content.objects.all()
     return render(request, 'home.html', {'contenidos': contenidos})
 
@@ -133,3 +141,22 @@ def setup_groups(request):
     else:
         # Redirección al login si no está autenticado
         return redirect('login') """
+
+
+from django.shortcuts import redirect
+from django.contrib.auth.models import User
+
+def logout_to_cuidador(request):
+    # Cierra la sesión del usuario actual
+    logout(request)
+    try:
+        # Busca el usuario "cuidador"
+        cuidador = User.objects.get(username='cuidador')
+        # Inicia sesión automáticamente como cuidador
+        login(request, cuidador)
+    except User.DoesNotExist:
+        # Asegúrate de que el usuario cuidador exista
+        return redirect('login')  # Redirige a la página de login si no existe el usuario cuidador
+
+    # Redirige a la página principal después de iniciar sesión como cuidador
+    return redirect('home')

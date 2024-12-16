@@ -108,18 +108,23 @@
       .custom-color {
         color: #093c71; /* Puedes usar cualquier código hexadecimal o nombre de color */
       }
-      body {
-            /* background-color: #343a40; Color oscuro */
-            /*color: #fff; /* Texto en blanco */
-            font-family: 'Poppins', sans-serif;
-            /* height: 100vh;  Asegura que el contenedor ocupe la pantalla completa  */
-            display: flex; /* Configuración de centrado */
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            margin: 0;
-        }
-
+      html, body {
+        /* background-color: #343a40; Color oscuro */
+        /*color: #fff; /* Texto en blanco */
+        font-family: 'Poppins', sans-serif;
+        height: 100%; /* Asegura que el contenedor ocupe la pantalla completa */
+        display: flex; /* Configuración de centrado */
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin: 0;
+        overflow-y: auto; /* Permitir scroll vertical */
+      }
+      .container-fluid {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
     </style>
     
   </head>
@@ -164,7 +169,7 @@
                   <a href="{% url 'home'  %}" class="w-100 btn btn-danger">Cancelar</a>
                 </form>
               </div>
-              <div class="col-lg-4 col-md-12">
+              <div class="col-lg-4 col-md-12"  style="max-height: 100%; overflow-y: auto;">
                 <h4 class="custom-color"><strong>Previsualizar</strong></h4>
                 <div style="border: 1px solid #093c71; padding: 20px; border-radius: 10px;">
                   <img id="preview-image" src="#" alt="Previsualización de la imagen" style="max-width: 100%; height: auto; display: none;">

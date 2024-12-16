@@ -61,14 +61,46 @@
         <p>Aquí puedes ver el contenido de apoyo para los cuidadores.</p>
         <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
             <li>
-                <a href="{% url 'login'  %}" class="nav-link btn btn-light text-blue">
-                    <svg  class="bi d-block  mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
-                    Soy Administrador 
+                <a href="{% url 'login' %}" class="nav-link btn btn-light text-blue" id="admin-link" onclick="handleAdminClick(event)">
+                    <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                        <use xlink:href="#people-circle"></use>
+                    </svg>
+                    Soy Administrador
                 </a>
             </li>
         </ul>
         
-    </div>       
-    
+    </div>    
+       
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const adminLink = document.getElementById("admin-link");
+
+            // Verificar si "logoutClicked" está en localStorage
+            if (localStorage.getItem('logoutClicked') === 'true') {
+                adminLink.innerHTML = `
+                    <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                        <use xlink:href="#people-circle"></use>
+                    </svg>
+                    Administrador :)
+                `;
+                // Limpiar el estado en localStorage para evitar conflictos futuros
+                localStorage.removeItem('logoutClicked');
+            }
+        });
+
+        function handleAdminClick(event) {
+            const adminLink = document.getElementById("admin-link");
+            adminLink.innerHTML = `
+                <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                    <use xlink:href="#people-circle"></use>
+                </svg>
+                Administrador :)
+            `;
+            // Actualizar el estado en localStorage
+            localStorage.setItem('logoutClicked', "true");
+        }
+
+    </script>
 </body>
 </html>
